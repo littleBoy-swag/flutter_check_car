@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'common_color.dart';
+import 'common_color.dart';
 
 final dialogTextStyle = TextStyle(
     fontSize: 16, color: Color(c_333333), fontWeight: FontWeight.bold);
@@ -12,3 +13,5 @@ final titleStyle = TextStyle(fontSize: 15, color: Color(c_333333));
 
 final infoTitleStyle = TextStyle(
     fontSize: 17, color: Color(c_333333), fontWeight: FontWeight.bold);
+
+final itemStyle = TextStyle(fontSize: 16,color: Color(c_333333));

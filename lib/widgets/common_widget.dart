@@ -14,4 +14,5 @@ var commonFooter = ClassicalFooter(
   loadingText: "正在加载",
   loadFailedText: "加载失败",
   loadReadyText: "加载完成",
+  noMoreText: "没有更多数据了"
 );

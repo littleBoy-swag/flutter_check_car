@@ -1,10 +1,14 @@
 import 'package:checkcar/common/common_color.dart';
 import 'package:checkcar/common/common_style.dart';
 import 'package:checkcar/widgets/item_widget.dart';
+import 'package:checkcar/widgets/pop_widget.dart';
 import 'package:checkcar/widgets/v_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_tencentplayer/controller/tencent_player_controller.dart';
+import 'package:flutter_tencentplayer/view/tencent_player.dart';
+import 'package:video_player/video_player.dart';
 
 class CarDetailPage extends StatefulWidget {
   @override
@@ -12,6 +16,39 @@ class CarDetailPage extends StatefulWidget {
 }
 
 class _CarDetailPageState extends State<CarDetailPage> {
+  TextEditingController _reasonController;
+
+//  VideoPlayerController _videoPlayerController;
+  TencentPlayerController _playerController;
+
+  @override
+  void initState() {
+    super.initState();
+    _reasonController = TextEditingController();
+//    _videoPlayerController = VideoPlayerController.network("http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4")
+//      ..initialize().then((value) {
+//        setState(() {});
+//      });
+    _playerController = TencentPlayerController.network(
+        "http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4")
+      ..initialize().then((value) {
+        setState(() {});
+      });
+    _playerController.addListener(() {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _reasonController?.dispose();
+    _reasonController = null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,6 +208,10 @@ class _CarDetailPageState extends State<CarDetailPage> {
                   decoration: BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(12)),
+                  child: _playerController.value.initialized?TencentPlayer(_playerController)
+                  :Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ),
             )
