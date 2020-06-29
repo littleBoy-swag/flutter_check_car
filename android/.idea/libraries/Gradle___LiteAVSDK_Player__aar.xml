@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: :LiteAVSDK_Player:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f7f2431a59cbf9857a6be3e4c00e6874/jetified-LiteAVSDK_Player/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f7f2431a59cbf9857a6be3e4c00e6874/jetified-LiteAVSDK_Player/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f7f2431a59cbf9857a6be3e4c00e6874/jetified-LiteAVSDK_Player/jars/libs/LiteAVSDK_Player.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
