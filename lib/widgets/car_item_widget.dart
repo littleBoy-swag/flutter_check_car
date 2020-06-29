@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 class CarItemWidget extends StatefulWidget {
 
-  CarItemWidget({Key key}) :super(key: key);
+  final int status;
+
+  CarItemWidget({Key key, @required this.status}) : super(key: key);
 
   @override
   _CarItemWidgetState createState() => _CarItemWidgetState();
@@ -30,8 +32,8 @@ class _CarItemWidgetState extends State<CarItemWidget> {
                           style: titleStyle,
                         )),
                     Text(
-                      "待审核",
-                      style: TextStyle(fontSize: 14, color: Color(c_ff6600)),
+                      _getStatusText(widget.status),
+                      style: _getStatusStyle(widget.status),
                     )
                   ],
                 ),
@@ -52,5 +54,39 @@ class _CarItemWidgetState extends State<CarItemWidget> {
       ),
       elevation: 4,
     );
+  }
+
+  _getStatusStyle(int status) {
+    switch (status) {
+      case 0:
+        return rejectStyle;
+        break;
+      case 1:
+        return onSaleStyle;
+        break;
+      case 2:
+        return offSaleStyle;
+        break;
+      default:
+        return rejectStyle;
+        break;
+    }
+  }
+
+  String _getStatusText(status) {
+    switch (status) {
+      case 0:
+        return "待审核";
+        break;
+      case 1:
+        return "上架";
+        break;
+      case 2:
+        return "下架";
+        break;
+      default:
+        return "待审核";
+        break;
+    }
   }
 }

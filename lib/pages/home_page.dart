@@ -1,6 +1,7 @@
 import 'package:checkcar/pages/car_detail_page.dart';
 import 'package:checkcar/widgets/car_item_widget.dart';
 import 'package:checkcar/widgets/common_widget.dart';
+import 'package:checkcar/widgets/v_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/screenutil.dart';
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   ];
 
   EasyRefreshController _controller;
-  int _count = 20;
+  int _count = 0;
 
   @override
   void initState() {
@@ -92,10 +93,23 @@ class _HomePageState extends State<HomePage> {
           delegate: SliverChildBuilderDelegate((context, index) {
             return CarItemWidget(
               key: GlobalKey(),
+              status: index % 3,
             );
           }, childCount: _count),
         ),
       ],
+      emptyWidget: _count == 0 ? Container(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Image.asset('images/ic_empty.png',width: 125,height: 164,),
+              VWidget(height: 20,),
+              Text("暂无数据")
+            ],
+          ),
+        ),
+      ) : null,
     );
   }
 }
