@@ -20,7 +20,8 @@ class _BigImagePageState extends State<BigImagePage> {
 
   PageController _pageController;
   String indexStr = "";
-  final GlobalKey<ExtendedImageEditorState> editorKey = GlobalKey<ExtendedImageEditorState>();
+  final GlobalKey<ExtendedImageEditorState> editorKey =
+      GlobalKey<ExtendedImageEditorState>();
 
   @override
   void initState() {
@@ -34,6 +35,16 @@ class _BigImagePageState extends State<BigImagePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
+        leading: InkWell(
+          child: Icon(
+            Icons.arrow_back_ios,
+            size: 24,
+            color: Colors.black,
+          ),
+          onTap: () {
+            Navigator.of(context).maybePop();
+          },
+        ),
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
@@ -98,10 +109,8 @@ class _BigImagePageState extends State<BigImagePage> {
                     cache: true,
                     mode: ExtendedImageMode.gesture,
                     extendedImageEditorKey: editorKey,
-                    initGestureConfigHandler: (state){
-                      return GestureConfig(
-                        inPageView: true
-                      );
+                    initGestureConfigHandler: (state) {
+                      return GestureConfig(inPageView: true);
                     },
                   ),
                 ),
@@ -148,7 +157,6 @@ class _BigImagePageState extends State<BigImagePage> {
           top: 20,
           right: 20,
         ), //index
-
       ],
     ));
   }
