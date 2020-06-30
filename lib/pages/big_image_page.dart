@@ -107,6 +107,7 @@ class _BigImagePageState extends State<BigImagePage> {
                   child: ExtendedImage.network(
                     url,
                     cache: true,
+                    fit: BoxFit.contain,
                     mode: ExtendedImageMode.gesture,
                     extendedImageEditorKey: editorKey,
                     initGestureConfigHandler: (state) {

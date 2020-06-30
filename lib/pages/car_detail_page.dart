@@ -245,8 +245,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
                       child: _playerController.value.initialized
                           ? TencentPlayer(_playerController)
                           : Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                              child: CircularProgressIndicator(),
+                            ),
                     ),
                     Positioned(
                       child: GestureDetector(
@@ -503,8 +503,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
                                 child: ExtendedImage.network(e,
                                     cache: true,
                                     mode: ExtendedImageMode.gesture,
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                     borderRadius: BorderRadius.circular(12),
+                                    shape: BoxShape.rectangle,
                                     initGestureConfigHandler: (state) {
                                   return GestureConfig(inPageView: true);
                                 }),
