@@ -79,7 +79,7 @@ class _BigImagePageState extends State<BigImagePage> {
     return Expanded(
         child: Stack(
       children: <Widget>[
-        PageView(
+        ExtendedImageGesturePageView(
           controller: _pageController,
           onPageChanged: (p) {
             print(p);
@@ -95,6 +95,11 @@ class _BigImagePageState extends State<BigImagePage> {
                     url,
                     cache: true,
                     mode: ExtendedImageMode.gesture,
+                    initGestureConfigHandler: (state){
+                      return GestureConfig(
+                        inPageView: true
+                      );
+                    },
                   ),
                 ),
               )
