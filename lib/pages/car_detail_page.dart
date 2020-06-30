@@ -2,6 +2,7 @@ import 'package:checkcar/common/common_color.dart';
 import 'package:checkcar/common/common_style.dart';
 import 'package:checkcar/pages/big_image_page.dart';
 import 'package:checkcar/pages/video_page.dart';
+import 'package:checkcar/utils/dialog_util.dart';
 import 'package:checkcar/widgets/custom_radio.dart';
 import 'package:checkcar/widgets/item_widget.dart';
 import 'package:checkcar/widgets/pop_widget.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_tencentplayer/controller/tencent_player_controller.dart';
 import 'package:flutter_tencentplayer/view/tencent_player.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:video_player/video_player.dart';
 
 class CarDetailPage extends StatefulWidget {
@@ -239,9 +241,6 @@ class _CarDetailPageState extends State<CarDetailPage> {
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(12)),
                       child: _playerController.value.initialized
                           ? TencentPlayer(_playerController)
                           : Center(
@@ -438,7 +437,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
                     color: Color(c_ff6600),
                   ),
                   onTap: () {
-                    print("驳回");
+                    DialogUtil.showRelatedCarDialog(context, "2", () {
+                      Fluttertoast.showToast(msg: "取消");
+                    }, () {
+                      Fluttertoast.showToast(msg: "确定驳回");
+                    });
                   },
                 )),
                 Expanded(
