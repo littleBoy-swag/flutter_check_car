@@ -45,11 +45,23 @@ android {
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        release {
+            storeFile file("app.keystore")
+            storePassword "pc_1234"
+            keyAlias "app_sign"
+            keyPassword "PC_1234"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            ndk {
+                abiFilters 'armeabi', 'armeabi-v7a'//设置⽀支持的SO库架构
+            }
+            signingConfig signingConfigs.release
         }
     }
 }

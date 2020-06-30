@@ -1,8 +1,10 @@
 import 'package:checkcar/common/common_color.dart';
 import 'package:checkcar/common/common_style.dart';
+import 'package:checkcar/pages/big_image_page.dart';
 import 'package:checkcar/widgets/item_widget.dart';
 import 'package:checkcar/widgets/pop_widget.dart';
 import 'package:checkcar/widgets/v_widget.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -20,6 +22,17 @@ class _CarDetailPageState extends State<CarDetailPage> {
 
 //  VideoPlayerController _videoPlayerController;
   TencentPlayerController _playerController;
+
+  final data = [
+    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497538350&di=3c7841b4f38254f65f18aaa78b91ac0f&imgtype=0&src=http%3A%2F%2Fimg3.imgtn.bdimg.com%2Fit%2Fu%3D333824343%2C3867419450%26fm%3D214%26gp%3D0.jpg",
+    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497538069&di=7c3b91fb45d593e0f23df3622ba67fa1&imgtype=0&src=http%3A%2F%2Fcar0.autoimg.cn%2Fupload%2Fspec%2F13452%2Fu_20120723095341589264.jpg",
+    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497556626&di=7896521541f4842cce64dcd8cb64bbfe&imgtype=0&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D2611392705%2C2273559848%26fm%3D214%26gp%3D0.jpg",
+    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497538067&di=69cfc6ab1bd390d2046a84c4bbea8946&imgtype=0&src=http%3A%2F%2Fimg.ewebweb.com%2Fuploads%2F20190623%2F21%2F1561296099-qWuzENTlxe.jpg",
+    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497538067&di=00bbb1fd142cd158b15f1617bafa529a&imgtype=0&src=http%3A%2F%2Fpic29.nipic.com%2F20130522%2F12421584_133951593000_2.jpg",
+    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593506225788&di=8913b4d47f4e3f6878e644927cea2adb&imgtype=0&src=http%3A%2F%2Fcdn.duitang.com%2Fuploads%2Fitem%2F201412%2F27%2F20141227150432_FeS8P.jpeg"
+  ];
+
+  String _indexStr = "";
 
   @override
   void initState() {
@@ -39,6 +52,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
         return;
       }
       setState(() {});
+    });
+    setState(() {
+      _indexStr = "1/" + data.length.toString();
     });
   }
 
@@ -208,10 +224,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
                   decoration: BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(12)),
-                  child: _playerController.value.initialized?TencentPlayer(_playerController)
-                  :Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: _playerController.value.initialized
+                      ? TencentPlayer(_playerController)
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        ),
                 ),
               ),
             )
@@ -237,6 +254,12 @@ class _CarDetailPageState extends State<CarDetailPage> {
             ),
             VWidget(
               height: 15,
+            ),
+            Column(
+              children: <Widget>[
+                Row(),
+                Row(),
+              ],
             ),
             TextField(
               maxLines: 2,
@@ -326,18 +349,75 @@ class _CarDetailPageState extends State<CarDetailPage> {
               width: double.infinity,
               child: AspectRatio(
                 aspectRatio: 4 / 3,
-                child: Swiper(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: Image.network(
-                        "http://via.placeholder.com/288x188",
-                        fit: BoxFit.cover,
+                child: Stack(
+                  children: <Widget>[
+                    ExtendedImageGesturePageView(
+                      onPageChanged: (p) {
+                        setState(() {
+                          _indexStr =
+                              (p + 1).toString() + "/" + data.length.toString();
+                        });
+                      },
+                      children: data
+                          .map((e) => Container(
+                                child: ExtendedImage.network(e,
+                                    cache: true,
+                                    mode: ExtendedImageMode.gesture,
+                                    fit: BoxFit.fill,
+                                    borderRadius: BorderRadius.circular(12),
+                                    initGestureConfigHandler: (state) {
+                                  return GestureConfig(inPageView: true);
+                                }),
+                              ))
+                          .toList(),
+                    ),
+                    Positioned(
+                      child: GestureDetector(
+                        child: Image.asset(
+                          "images/ic_enlarge.png",
+                          width: 20,
+                          height: 20,
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BigImagePage(),
+                          ));
+                        },
                       ),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12)),
-                    );
-                  },
+                      right: 15,
+                      bottom: 15,
+                    ),
+                    Positioned(
+                      child: GestureDetector(
+                        child: Image.asset(
+                          "images/ic_rotate.png",
+                          width: 20,
+                          height: 20,
+                        ),
+                        onTap: () {
+                          print("旋转");
+                        },
+                      ),
+                      bottom: 15,
+                      right: 55,
+                    ),
+                    Positioned(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Color(c_66000000),
+                            borderRadius: BorderRadius.circular(11)),
+                        height: 22,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          _indexStr,
+                          style: TextStyle(fontSize: 11, color: Colors.white),
+                        ),
+                      ),
+                      top: 20,
+                      right: 20,
+                    ), //
+                  ],
                 ),
               ),
             ),

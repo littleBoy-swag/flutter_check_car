@@ -37,6 +37,7 @@ dependencies:
   flutter_swiper: ^1.1.6 # 轮播
   video_player: ^0.10.11+1 # 视频
   dio: ^3.0.9 # 网络请求
+  image: any
 
 dev_dependencies:
   flutter_test:
