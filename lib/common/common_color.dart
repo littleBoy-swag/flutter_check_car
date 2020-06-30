@@ -11,3 +11,4 @@ final c_86cdff = 0xFF86CDFF;
 final c_cccccc = 0xFFCCCCCC;
 final c_2a8cff = 0xFF2A8CFF;
 final c_f2f7fa = 0xFFF2F7FA;
+final c_66000000 = 0x66000000;

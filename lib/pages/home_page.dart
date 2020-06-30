@@ -1,3 +1,4 @@
+import 'package:checkcar/pages/big_image_page.dart';
 import 'package:checkcar/pages/car_detail_page.dart';
 import 'package:checkcar/widgets/car_item_widget.dart';
 import 'package:checkcar/widgets/common_widget.dart';
@@ -47,7 +48,8 @@ class _HomePageState extends State<HomePage> {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CarDetailPage(),
+//                  builder: (context) => CarDetailPage(),
+                  builder: (context) => BigImagePage(),
                 ));
               }),
         ],
