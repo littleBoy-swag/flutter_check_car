@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:checkcar/common/constant.dart';
 import 'package:checkcar/net/req_service.dart';
 import 'package:dio/dio.dart';
 
@@ -10,7 +11,7 @@ class NetUtil {
 
   NetUtil() {
     var options = BaseOptions(
-        connectTimeout: 15 * 1000, receiveTimeout: 10 * 1000, baseUrl: "https://www.wanandroid.com"); // TODO baseurl添加
+        connectTimeout: 15 * 1000, receiveTimeout: 10 * 1000, baseUrl: BASE_URL);
     Dio dio = Dio(options);
     _reqService = ReqService(dio);
   }

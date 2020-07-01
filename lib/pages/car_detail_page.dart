@@ -2,6 +2,8 @@ import 'package:checkcar/common/common_color.dart';
 import 'package:checkcar/common/common_style.dart';
 import 'package:checkcar/pages/big_image_page.dart';
 import 'package:checkcar/pages/video_page.dart';
+import 'package:checkcar/route/bundle.dart';
+import 'package:checkcar/route/page_routes.dart';
 import 'package:checkcar/utils/dialog_util.dart';
 import 'package:checkcar/widgets/custom_radio.dart';
 import 'package:checkcar/widgets/item_widget.dart';
@@ -37,6 +39,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
   ];
 
   String _indexStr = "";
+  int _index = 0;
   String groupId = "";
   String videoShowId = "1";
 
@@ -496,6 +499,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
                   children: <Widget>[
                     ExtendedImageGesturePageView(
                       onPageChanged: (p) {
+                        _index = p;
                         setState(() {
                           _indexStr =
                               (p + 1).toString() + "/" + data.length.toString();
@@ -523,9 +527,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
                           height: 20,
                         ),
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BigImagePage(),
-                          ));
+                          Navigator.pushNamed(
+                              context, RouteConstant.BIG_IMAGE_PAGE,
+                              arguments: new Bundle()
+                                ..putList("img_list", data)
+                                ..putInt("index", _index));
                         },
                       ),
                       right: 15,

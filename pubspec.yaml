@@ -38,6 +38,7 @@ dependencies:
   video_player: ^0.10.11+1 # 视频
   dio: ^3.0.9 # 网络请求
   image: any
+  fluro: ^1.6.3 # 路由
 
 dev_dependencies:
   flutter_test:

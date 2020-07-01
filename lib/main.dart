@@ -1,7 +1,9 @@
 import 'package:checkcar/pages/home_page.dart';
+import 'package:checkcar/route/page_router.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  PageRouter.setupRoutes();
   runApp(MyApp());
 }
 
@@ -10,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      onGenerateRoute: PageRouter.router.generator,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.

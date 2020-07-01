@@ -107,6 +107,13 @@
             </list>
           </value>
         </entry>
+        <entry key="fluro">
+          <value>
+            <list>
+              <option value="D:/Flutter/flutter/.pub-cache/hosted/pub.flutter-io.cn/fluro-1.6.3/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter">
           <value>
             <list>
@@ -461,6 +468,7 @@
       <root url="file://D:/Flutter/flutter/.pub-cache/hosted/pub.flutter-io.cn/extended_image-0.7.4/lib" />
       <root url="file://D:/Flutter/flutter/.pub-cache/hosted/pub.flutter-io.cn/extended_image_library-0.2.3/lib" />
       <root url="file://D:/Flutter/flutter/.pub-cache/hosted/pub.flutter-io.cn/file-5.2.1/lib" />
+      <root url="file://D:/Flutter/flutter/.pub-cache/hosted/pub.flutter-io.cn/fluro-1.6.3/lib" />
       <root url="file://D:/Flutter/flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_cache_manager-1.4.1/lib" />
       <root url="file://D:/Flutter/flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_easyrefresh-2.1.1/lib" />
       <root url="file://D:/Flutter/flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_page_indicator-0.0.3/lib" />
