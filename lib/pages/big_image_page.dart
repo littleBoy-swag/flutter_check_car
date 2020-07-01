@@ -29,6 +29,9 @@ class _BigImagePageState extends State<BigImagePage> {
     data = widget.bundle.getList("img_list");
     _index = widget.bundle.getInt("index");
     indexStr = "1/" + data.length.toString();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _pageController.jumpToPage(_index);
+    });
   }
 
   @override

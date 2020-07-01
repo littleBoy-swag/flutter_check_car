@@ -1,6 +1,11 @@
+import 'package:checkcar/route/bundle.dart';
 import 'package:flutter/material.dart';
 
 class VideoPage extends StatefulWidget {
+
+  final Bundle bundle;
+  VideoPage({this.bundle});
+
   @override
   _VideoPageState createState() => _VideoPageState();
 }

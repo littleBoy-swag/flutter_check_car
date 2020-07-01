@@ -19,6 +19,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:video_player/video_player.dart';
 
 class CarDetailPage extends StatefulWidget {
+
+  final Bundle bundle;
+  CarDetailPage({this.bundle});
+
   @override
   _CarDetailPageState createState() => _CarDetailPageState();
 }
@@ -95,7 +99,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          "待审核车源",
+          widget.bundle.getString("title") ?? "",
           style: TextStyle(color: Colors.black, fontSize: 17),
         ),
       ),

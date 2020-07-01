@@ -1,5 +1,7 @@
 import 'package:checkcar/pages/big_image_page.dart';
 import 'package:checkcar/pages/car_detail_page.dart';
+import 'package:checkcar/route/bundle.dart';
+import 'package:checkcar/route/page_routes.dart';
 import 'package:checkcar/widgets/car_item_widget.dart';
 import 'package:checkcar/widgets/common_widget.dart';
 import 'package:checkcar/widgets/v_widget.dart';
@@ -47,9 +49,9 @@ class _HomePageState extends State<HomePage> {
                 height: 16,
               ),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CarDetailPage(),
-                ));
+                Navigator.pushNamed(
+                    context, RouteConstant.CAR_DETAIL_PAGE,
+                    arguments: Bundle()..putString("title", "待审核车源"));
               }),
         ],
       ),
