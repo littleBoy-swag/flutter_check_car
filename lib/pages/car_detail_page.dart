@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:checkcar/common/common_color.dart';
 import 'package:checkcar/common/common_style.dart';
 import 'package:checkcar/pages/big_image_page.dart';
@@ -5,8 +7,12 @@ import 'package:checkcar/pages/video_page.dart';
 import 'package:checkcar/route/bundle.dart';
 import 'package:checkcar/route/page_routes.dart';
 import 'package:checkcar/utils/dialog_util.dart';
+import 'package:checkcar/utils/forbidshot_util.dart';
 import 'package:checkcar/widgets/custom_radio.dart';
 import 'package:checkcar/widgets/item_widget.dart';
+import 'package:checkcar/widgets/player/tencent_player_bottom_widget.dart';
+import 'package:checkcar/widgets/player/tencent_player_gesture_cover.dart';
+import 'package:checkcar/widgets/player/tencent_player_loading.dart';
 import 'package:checkcar/widgets/pop_widget.dart';
 import 'package:checkcar/widgets/v_widget.dart';
 import 'package:extended_image/extended_image.dart';
@@ -16,11 +22,12 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_tencentplayer/controller/tencent_player_controller.dart';
 import 'package:flutter_tencentplayer/view/tencent_player.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:screen/screen.dart';
 import 'package:video_player/video_player.dart';
 
 class CarDetailPage extends StatefulWidget {
-
   final Bundle bundle;
+
   CarDetailPage({this.bundle});
 
   @override
@@ -46,6 +53,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
   int _index = 0;
   String groupId = "";
   String videoShowId = "1";
+  bool showCover = false;
+  Timer timer;
 
   @override
   void initState() {
@@ -69,6 +78,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
     setState(() {
       _indexStr = "1/" + data.length.toString();
     });
+    hideCover();
+    ForbidShotUtil.initForbid(context);
+    Screen.keepOn(true);
   }
 
   @override
@@ -241,38 +253,93 @@ class _CarDetailPageState extends State<CarDetailPage> {
               style: TextStyle(fontSize: 14, color: Color(c_999999)),
             ),
             VWidget(height: 15),
-            Container(
-              width: double.infinity,
-              child: AspectRatio(
-                aspectRatio: 4 / 3,
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      child: _playerController.value.initialized
-                          ? TencentPlayer(_playerController)
-                          : Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                    ),
-                    Positioned(
-                      child: GestureDetector(
-                        child: Image.asset(
-                          "images/ic_enlarge.png",
-                          width: 20,
-                          height: 20,
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => VideoPage(),
-                          ));
-                        },
+            GestureDetector(
+              child: Container(
+                width: double.infinity,
+                child: AspectRatio(
+                  aspectRatio: 4 / 3,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Container(
+                        child: _playerController.value.initialized
+                            ? TencentPlayer(_playerController)
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              ),
                       ),
-                      right: 15,
-                      bottom: 15,
-                    ),
-                  ],
+
+                      ///支撑全屏
+                      Container(),
+
+                      ///半透明浮层
+                      showCover
+                          ? Container(
+                              color: Color(0x7F000000),
+                            )
+                          : SizedBox(),
+
+                      ///处理滑动手势
+                      TencentPlayerGestureCover(
+                        controller: _playerController,
+                        behavingCallBack: delayHideCover,
+                      ),
+
+                      ///加载loading
+                      TencentPlayerLoading(
+                        controller: _playerController,
+                        iconW: 53,
+                      ),
+                      showCover
+                          ? Positioned(
+                              child: TencentPlayerBottomWidget(
+                                isShow: showCover,
+                                controller: _playerController,
+                                showClearBtn: false,
+                                showRateBtn: false,
+                                changeClear: (index){},
+                                behavingCallBack: (){
+                                  delayHideCover();
+                                },
+                              ),
+                        left: 0,
+                        bottom: 0,
+                        right: 40,
+                            )
+                          : SizedBox(),
+                      showCover
+                          ? Positioned(
+                              child: GestureDetector(
+                                child: Image.asset(
+                                  "images/ic_enlarge.png",
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => VideoPage(),
+                                  ));
+                                },
+                              ),
+                              right: 15,
+                              bottom: 15,
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
                 ),
               ),
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                hideCover();
+              },
+              onDoubleTap: () {
+                if (_playerController.value.isPlaying) {
+                  _playerController.pause();
+                } else {
+                  _playerController.play();
+                }
+              },
             ),
             VWidget(height: 15),
             Row(
@@ -627,5 +694,28 @@ class _CarDetailPageState extends State<CarDetailPage> {
         ),
       ),
     );
+  }
+
+  hideCover() {
+    if (!mounted) return;
+    setState(() {
+      showCover = !showCover;
+    });
+    delayHideCover();
+  }
+
+  delayHideCover() {
+    if (timer != null) {
+      timer.cancel();
+      timer = null;
+    }
+    if (showCover) {
+      timer = new Timer(Duration(seconds: 3), () {
+        if (!mounted) return;
+        setState(() {
+          showCover = false;
+        });
+      });
+    }
   }
 }

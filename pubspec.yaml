@@ -40,6 +40,8 @@ dependencies:
   image: any
   fluro: ^1.6.3 # 路由
   flutter_datetime_picker: ^1.3.8 # 日期选择
+  screen: 0.0.5
+  flutter_forbidshot: 0.0.2
 
 dev_dependencies:
   flutter_test:
