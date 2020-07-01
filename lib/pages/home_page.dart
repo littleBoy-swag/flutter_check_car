@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:checkcar/common/common_style.dart';
 import 'package:checkcar/pages/big_image_page.dart';
 import 'package:checkcar/pages/car_detail_page.dart';
 import 'package:checkcar/route/bundle.dart';
@@ -19,20 +20,39 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final data = [
-    Colors.green[50],
-    Colors.green[100],
-    Colors.green[200],
-  ];
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
 
+  TabController _tabController;
   EasyRefreshController _controller;
   int _count = 0;
+  int _curIndex = 0;
 
   @override
   void initState() {
     _controller = EasyRefreshController();
+    _tabController = TabController(length: 3, vsync: this);
     super.initState();
+    _tabController.addListener(() {
+      if(_tabController.index == _tabController.animation.value) {
+        setState(() {
+          _curIndex = _tabController.index;
+          _controller.callRefresh();
+        });
+      }
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.callRefresh();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController?.dispose();
+    _tabController = null;
+    _controller?.dispose();
+    _controller = null;
   }
 
   @override
@@ -57,7 +77,10 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context).push(PopRoute(
                   child: PopUpWindow(
                     left: 0,
-                    top: 56 + MediaQueryData.fromWindow(window).padding.top, // appbar高度+状态栏高度
+                    top: 56 + MediaQueryData
+                        .fromWindow(window)
+                        .padding
+                        .top, // appbar高度+状态栏高度
                     child: PopWidget(),
                     onClick: () {
                       print("pop");
@@ -67,14 +90,25 @@ class _HomePageState extends State<HomePage> {
                 ));
               }),
         ],
+        bottom: TabBar(
+          tabs: [
+            Tab(
+              child: Text("平台车源(499)",
+                  style: (_curIndex == 0) ? tabSelectedStyle : tabStyle),
+            ),
+            Tab(
+              child: Text("同行批发(999)",style: (_curIndex == 1) ? tabSelectedStyle : tabStyle),
+            ),
+            Tab(
+              child: Text("新车批售(999)",style: (_curIndex == 2) ? tabSelectedStyle : tabStyle),
+            ),
+          ],
+          isScrollable: true,
+          controller: _tabController,
+        ),
       ),
       body: Container(
-        child: PageView(
-          onPageChanged: (p) {
-            print(p);
-          },
-          children: data.map((e) => _buildPage()).toList(),
-        ),
+        child: _buildPage(),
       ),
     );
   }
@@ -125,7 +159,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Image.asset('images/ic_empty.png',width: 125,height: 164,),
+              Image.asset('images/ic_empty.png', width: 125, height: 164,),
               VWidget(height: 20,),
               Text("暂无数据")
             ],
