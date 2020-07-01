@@ -1,31 +1,33 @@
 import 'package:checkcar/common/common_color.dart';
+import 'package:checkcar/route/bundle.dart';
 import 'package:checkcar/widgets/v_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class BigImagePage extends StatefulWidget {
+
+  final Bundle bundle;
+  BigImagePage({this.bundle});
+
   @override
   _BigImagePageState createState() => _BigImagePageState();
 }
 
 class _BigImagePageState extends State<BigImagePage> {
-  final data = [
-    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497538350&di=3c7841b4f38254f65f18aaa78b91ac0f&imgtype=0&src=http%3A%2F%2Fimg3.imgtn.bdimg.com%2Fit%2Fu%3D333824343%2C3867419450%26fm%3D214%26gp%3D0.jpg",
-    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497538069&di=7c3b91fb45d593e0f23df3622ba67fa1&imgtype=0&src=http%3A%2F%2Fcar0.autoimg.cn%2Fupload%2Fspec%2F13452%2Fu_20120723095341589264.jpg",
-    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497556626&di=7896521541f4842cce64dcd8cb64bbfe&imgtype=0&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D2611392705%2C2273559848%26fm%3D214%26gp%3D0.jpg",
-    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497538067&di=69cfc6ab1bd390d2046a84c4bbea8946&imgtype=0&src=http%3A%2F%2Fimg.ewebweb.com%2Fuploads%2F20190623%2F21%2F1561296099-qWuzENTlxe.jpg",
-    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593497538067&di=00bbb1fd142cd158b15f1617bafa529a&imgtype=0&src=http%3A%2F%2Fpic29.nipic.com%2F20130522%2F12421584_133951593000_2.jpg",
-    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593506225788&di=8913b4d47f4e3f6878e644927cea2adb&imgtype=0&src=http%3A%2F%2Fcdn.duitang.com%2Fuploads%2Fitem%2F201412%2F27%2F20141227150432_FeS8P.jpeg"
-  ];
+  var data = [];
+  var _index = 0;
 
   PageController _pageController;
   String indexStr = "";
-  final GlobalKey<ExtendedImageEditorState> editorKey = GlobalKey<ExtendedImageEditorState>();
+  final GlobalKey<ExtendedImageEditorState> editorKey =
+      GlobalKey<ExtendedImageEditorState>();
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    data = widget.bundle.getList("img_list");
+    _index = widget.bundle.getInt("index");
     indexStr = "1/" + data.length.toString();
   }
 
@@ -34,6 +36,16 @@ class _BigImagePageState extends State<BigImagePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
+        leading: InkWell(
+          child: Icon(
+            Icons.arrow_back_ios,
+            size: 24,
+            color: Colors.black,
+          ),
+          onTap: () {
+            Navigator.of(context).maybePop();
+          },
+        ),
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
@@ -96,12 +108,11 @@ class _BigImagePageState extends State<BigImagePage> {
                   child: ExtendedImage.network(
                     url,
                     cache: true,
+                    fit: BoxFit.contain,
                     mode: ExtendedImageMode.gesture,
                     extendedImageEditorKey: editorKey,
-                    initGestureConfigHandler: (state){
-                      return GestureConfig(
-                        inPageView: true
-                      );
+                    initGestureConfigHandler: (state) {
+                      return GestureConfig(inPageView: true);
                     },
                   ),
                 ),
@@ -148,7 +159,6 @@ class _BigImagePageState extends State<BigImagePage> {
           top: 20,
           right: 20,
         ), //index
-
       ],
     ));
   }

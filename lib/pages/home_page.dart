@@ -48,8 +48,7 @@ class _HomePageState extends State<HomePage> {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-//                  builder: (context) => CarDetailPage(),
-                  builder: (context) => BigImagePage(),
+                  builder: (context) => CarDetailPage(),
                 ));
               }),
         ],

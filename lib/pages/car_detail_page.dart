@@ -1,6 +1,11 @@
 import 'package:checkcar/common/common_color.dart';
 import 'package:checkcar/common/common_style.dart';
 import 'package:checkcar/pages/big_image_page.dart';
+import 'package:checkcar/pages/video_page.dart';
+import 'package:checkcar/route/bundle.dart';
+import 'package:checkcar/route/page_routes.dart';
+import 'package:checkcar/utils/dialog_util.dart';
+import 'package:checkcar/widgets/custom_radio.dart';
 import 'package:checkcar/widgets/item_widget.dart';
 import 'package:checkcar/widgets/pop_widget.dart';
 import 'package:checkcar/widgets/v_widget.dart';
@@ -10,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_tencentplayer/controller/tencent_player_controller.dart';
 import 'package:flutter_tencentplayer/view/tencent_player.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:video_player/video_player.dart';
 
 class CarDetailPage extends StatefulWidget {
@@ -33,6 +39,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
   ];
 
   String _indexStr = "";
+  int _index = 0;
+  String groupId = "";
+  String videoShowId = "1";
 
   @override
   void initState() {
@@ -62,6 +71,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
   void dispose() {
     _reasonController?.dispose();
     _reasonController = null;
+    _playerController?.dispose();
+    _playerController = null;
     super.dispose();
   }
 
@@ -71,6 +82,16 @@ class _CarDetailPageState extends State<CarDetailPage> {
       backgroundColor: Color(c_f2f7fa),
       appBar: AppBar(
         elevation: 1,
+        leading: InkWell(
+          child: Icon(
+            Icons.arrow_back_ios,
+            size: 24,
+            color: Colors.black,
+          ),
+          onTap: () {
+            Navigator.of(context).maybePop();
+          },
+        ),
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
@@ -220,17 +241,60 @@ class _CarDetailPageState extends State<CarDetailPage> {
               width: double.infinity,
               child: AspectRatio(
                 aspectRatio: 4 / 3,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: _playerController.value.initialized
-                      ? TencentPlayer(_playerController)
-                      : Center(
-                          child: CircularProgressIndicator(),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      child: _playerController.value.initialized
+                          ? TencentPlayer(_playerController)
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                    ),
+                    Positioned(
+                      child: GestureDetector(
+                        child: Image.asset(
+                          "images/ic_enlarge.png",
+                          width: 20,
+                          height: 20,
                         ),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => VideoPage(),
+                          ));
+                        },
+                      ),
+                      right: 15,
+                      bottom: 15,
+                    ),
+                  ],
                 ),
               ),
+            ),
+            VWidget(height: 15),
+            Row(
+              children: <Widget>[
+                CustomRadio(
+                    content: "客户端展示",
+                    groupId: videoShowId,
+                    id: "1",
+                    callback: () {
+                      setState(() {
+                        videoShowId = "1";
+                      });
+                    }),
+                SizedBox(
+                  width: 20,
+                ),
+                CustomRadio(
+                    content: "客户端不展示",
+                    groupId: videoShowId,
+                    id: "2",
+                    callback: () {
+                      setState(() {
+                        videoShowId = "2";
+                      });
+                    })
+              ],
             )
           ],
         ),
@@ -257,10 +321,88 @@ class _CarDetailPageState extends State<CarDetailPage> {
             ),
             Column(
               children: <Widget>[
-                Row(),
-                Row(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                        child: Container(
+                      child: CustomRadio(
+                          content: "照片与车型不符",
+                          groupId: groupId,
+                          id: "1",
+                          callback: () {
+                            setState(() {
+                              groupId = "1";
+                            });
+                          }),
+                    )),
+                    Expanded(
+                        child: Container(
+                      child: CustomRadio(
+                          content: "缺少车辆外观图片",
+                          groupId: groupId,
+                          id: "2",
+                          callback: () {
+                            setState(() {
+                              groupId = "2";
+                            });
+                          }),
+                    ))
+                  ],
+                ),
+                VWidget(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                        child: Container(
+                      child: CustomRadio(
+                          content: "外观图片拍摄不完整",
+                          groupId: groupId,
+                          id: "3",
+                          callback: () {
+                            setState(() {
+                              groupId = "3";
+                            });
+                          }),
+                    )),
+                    Expanded(
+                        child: Container(
+                      child: CustomRadio(
+                          content: "图片不是实拍图",
+                          groupId: groupId,
+                          id: "4",
+                          callback: () {
+                            setState(() {
+                              groupId = "4";
+                            });
+                          }),
+                    ))
+                  ],
+                ),
+                VWidget(height: 10),
+                CustomRadio(
+                    content: "新车板块不可发布二手车",
+                    groupId: groupId,
+                    id: "5",
+                    callback: () {
+                      setState(() {
+                        groupId = "5";
+                      });
+                    }),
+                VWidget(height: 10),
+                CustomRadio(
+                    content: "其他原因",
+                    groupId: groupId,
+                    id: "6",
+                    callback: () {
+                      setState(() {
+                        groupId = "6";
+                      });
+                    })
               ],
             ),
+            VWidget(height: 10),
             TextField(
               maxLines: 2,
               style: TextStyle(fontSize: 14, color: Color(c_333333)),
@@ -298,7 +440,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
                     color: Color(c_ff6600),
                   ),
                   onTap: () {
-                    print("驳回");
+                    DialogUtil.showRelatedCarDialog(context, "2", () {
+                      Fluttertoast.showToast(msg: "取消");
+                    }, () {
+                      Fluttertoast.showToast(msg: "确定驳回");
+                    });
                   },
                 )),
                 Expanded(
@@ -346,13 +492,14 @@ class _CarDetailPageState extends State<CarDetailPage> {
             ),
             VWidget(height: 15),
             Container(
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width,
               child: AspectRatio(
                 aspectRatio: 4 / 3,
                 child: Stack(
                   children: <Widget>[
                     ExtendedImageGesturePageView(
                       onPageChanged: (p) {
+                        _index = p;
                         setState(() {
                           _indexStr =
                               (p + 1).toString() + "/" + data.length.toString();
@@ -363,8 +510,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
                                 child: ExtendedImage.network(e,
                                     cache: true,
                                     mode: ExtendedImageMode.gesture,
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                     borderRadius: BorderRadius.circular(12),
+                                    shape: BoxShape.rectangle,
                                     initGestureConfigHandler: (state) {
                                   return GestureConfig(inPageView: true);
                                 }),
@@ -379,9 +527,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
                           height: 20,
                         ),
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BigImagePage(),
-                          ));
+                          Navigator.pushNamed(
+                              context, RouteConstant.BIG_IMAGE_PAGE,
+                              arguments: new Bundle()
+                                ..putList("img_list", data)
+                                ..putInt("index", _index));
                         },
                       ),
                       right: 15,
@@ -417,6 +567,54 @@ class _CarDetailPageState extends State<CarDetailPage> {
                       top: 20,
                       right: 20,
                     ), //
+                    Positioned(
+                      child: GestureDetector(
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                              "images/ic_pic_show_on_mobile_normal.png",
+                              width: 15,
+                              height: 15,
+                            ),
+                            SizedBox(width: 6),
+                            Image.asset(
+                              "images/ic_text_show_on_mobile.png",
+                              width: 60,
+                              height: 14,
+                            )
+                          ],
+                        ),
+                        onTap: () {
+                          print("客户端展示");
+                        },
+                      ),
+                      left: 15,
+                      bottom: 15,
+                    ),
+                    Positioned(
+                      child: GestureDetector(
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                              "images/ic_circle_normal.png",
+                              width: 15,
+                              height: 15,
+                            ),
+                            SizedBox(width: 6),
+                            Image.asset(
+                              "images/ic_text_main_pic.png",
+                              width: 27,
+                              height: 14,
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          print("主图");
+                        },
+                      ),
+                      top: 15,
+                      left: 15,
+                    ),
                   ],
                 ),
               ),
