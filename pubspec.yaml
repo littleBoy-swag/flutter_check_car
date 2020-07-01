@@ -39,6 +39,7 @@ dependencies:
   dio: ^3.0.9 # 网络请求
   image: any
   fluro: ^1.6.3 # 路由
+  flutter_datetime_picker: ^1.3.8 # 日期选择
 
 dev_dependencies:
   flutter_test:

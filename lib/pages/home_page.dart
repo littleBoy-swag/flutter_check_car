@@ -1,9 +1,14 @@
+import 'dart:ui';
+
 import 'package:checkcar/pages/big_image_page.dart';
 import 'package:checkcar/pages/car_detail_page.dart';
 import 'package:checkcar/route/bundle.dart';
 import 'package:checkcar/route/page_routes.dart';
 import 'package:checkcar/widgets/car_item_widget.dart';
 import 'package:checkcar/widgets/common_widget.dart';
+import 'package:checkcar/widgets/pop/pop_route.dart';
+import 'package:checkcar/widgets/pop/pop_up_window.dart';
+import 'package:checkcar/widgets/pop_widget.dart';
 import 'package:checkcar/widgets/v_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -49,9 +54,17 @@ class _HomePageState extends State<HomePage> {
                 height: 16,
               ),
               onPressed: () {
-                Navigator.pushNamed(
-                    context, RouteConstant.CAR_DETAIL_PAGE,
-                    arguments: Bundle()..putString("title", "待审核车源"));
+                Navigator.of(context).push(PopRoute(
+                  child: PopUpWindow(
+                    left: 0,
+                    top: 56 + MediaQueryData.fromWindow(window).padding.top, // appbar高度+状态栏高度
+                    child: PopWidget(),
+                    onClick: () {
+                      print("pop");
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ));
               }),
         ],
       ),
@@ -97,6 +110,12 @@ class _HomePageState extends State<HomePage> {
             return CarItemWidget(
               key: GlobalKey(),
               status: index % 3,
+              callback: () {
+                Navigator.pushNamed(
+                    context, RouteConstant.CAR_DETAIL_PAGE,
+                    arguments: Bundle()
+                      ..putString("title", "待审核车源"));
+              },
             );
           }, childCount: _count),
         ),

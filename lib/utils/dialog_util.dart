@@ -4,6 +4,7 @@ import 'package:checkcar/widgets/custom_radio.dart';
 import 'package:checkcar/widgets/v_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class DialogUtil {
   /// 展示关联车源dialog
@@ -104,4 +105,31 @@ class DialogUtil {
           );
         });
   }
+
+  /// 底部弹框
+  static void showActionSheetDialog(BuildContext context) {
+    showModalBottomSheet(context: context, builder: (context){
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(title: Text("全部"),),
+          ListTile(title: Text("待审核"),),
+          ListTile(title: Text("已下架"),),
+          ListTile(title: Text("已上架"),),
+        ],
+      );
+    });
+  }
+
+  /// 日期选择
+  static void showDatePicker(BuildContext context) {
+    DatePicker.showDatePicker(context, showTitleActions: true,
+        minTime: DateTime(2018, 5, 3),
+        maxTime: DateTime(2020, 7, 1),
+        onChanged: (date) {},
+        onConfirm: (date) {},
+        currentTime: DateTime.now(),
+        locale: LocaleType.zh);
+  }
+
 }

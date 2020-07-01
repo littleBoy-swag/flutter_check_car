@@ -10,10 +10,12 @@ class PopItemWidget extends StatefulWidget {
   final String iconPath;
   final bool showLine;
   final VoidCallback callback;
+  String hint;
 
   PopItemWidget(
       {@required this.prefix,
       @required this.suffix,
+      this.hint = "",
       this.iconPath,
       this.showLine = true,
       this.callback});
@@ -41,8 +43,12 @@ class _PopItemWidgetState extends State<PopItemWidget> {
               style: itemStyle,
             )),
             Text(
-              widget.suffix,
-              style: itemStyle,
+              (widget.suffix != null && widget.suffix.isNotEmpty)
+                  ? widget.suffix
+                  : widget.hint,
+              style: (widget.suffix != null && widget.suffix.isNotEmpty)
+                  ? itemStyle
+                  : itemHintStyle,
             ),
             Padding(
               padding: EdgeInsets.only(left: 10),

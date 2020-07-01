@@ -15,6 +15,7 @@ final infoTitleStyle = TextStyle(
     fontSize: 17, color: Color(c_333333), fontWeight: FontWeight.bold);
 
 final itemStyle = TextStyle(fontSize: 16,color: Color(c_333333));
+final itemHintStyle = TextStyle(fontSize: 16,color: Color(c_cccccc));
 
 final rejectStyle = TextStyle(fontSize: 14, color: Color(c_ff6600));
 final onSaleStyle = TextStyle(fontSize: 14, color: Color(c_666666));

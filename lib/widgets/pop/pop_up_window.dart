@@ -13,9 +13,10 @@ class PopUpWindow extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
+        onTap: onClick ??
+            () {
+              Navigator.of(context).pop();
+            },
         child: Stack(
           children: <Widget>[
             Container(
@@ -24,15 +25,7 @@ class PopUpWindow extends StatelessWidget {
               color: Colors.transparent,
             ),
             Positioned(
-              child: GestureDetector(
-                  child: child,
-                  onTap: () {
-                    //点击子child
-                    if (onClick != null) {
-                      Navigator.of(context).pop();
-                      onClick();
-                    }
-                  }),
+              child: child,
               left: left,
               top: top,
             ),

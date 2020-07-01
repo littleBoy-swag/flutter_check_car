@@ -1,3 +1,4 @@
+import 'package:checkcar/utils/dialog_util.dart';
 import 'package:checkcar/widgets/line.dart';
 import 'package:checkcar/widgets/pop_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class _PopWidgetState extends State<PopWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       color: Colors.white,
       padding: EdgeInsets.all(15),
       child: Column(
@@ -41,7 +42,7 @@ class _PopWidgetState extends State<PopWidget> {
             suffix: "全部",
             iconPath: 'images/ic_down_arrow.png',
             callback: () {
-              Fluttertoast.showToast(msg: "请选择状态");
+              DialogUtil.showActionSheetDialog(context);
             },
           ),
           PopItemWidget(
@@ -49,7 +50,7 @@ class _PopWidgetState extends State<PopWidget> {
             suffix: "全部",
             iconPath: 'images/ic_down_arrow.png',
             callback: () {
-              Fluttertoast.showToast(msg: "视频状态");
+              DialogUtil.showActionSheetDialog(context);
             },
           ),
           Padding(
@@ -61,18 +62,20 @@ class _PopWidgetState extends State<PopWidget> {
           ),
           PopItemWidget(
             prefix: "开始时间",
-            suffix: "请选择开始时间",
+            suffix: "",
+            hint: "请选择开始时间",
             iconPath: 'images/ic_time.png',
             callback: () {
-              Fluttertoast.showToast(msg: "请选择开始时间");
+            DialogUtil.showDatePicker(context);
             },
           ),
           PopItemWidget(
             prefix: "结束时间",
-            suffix: "请选择结束时间",
+            suffix: "",
+            hint: "请选择结束时间",
             iconPath: 'images/ic_time.png',
             callback: () {
-              Fluttertoast.showToast(msg: "请选择结束时间");
+              DialogUtil.showDatePicker(context);
             },
           ),
           Container(
