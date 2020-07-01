@@ -62,6 +62,8 @@ android {
                 abiFilters 'armeabi', 'armeabi-v7a'//设置⽀支持的SO库架构
             }
             signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
         }
     }
 }
